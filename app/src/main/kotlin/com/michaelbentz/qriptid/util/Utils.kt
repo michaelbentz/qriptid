@@ -1,0 +1,1 @@
+package com.michaelbentz.qriptid.util
