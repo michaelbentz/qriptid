@@ -1,6 +1,5 @@
 package com.michaelbentz.qriptid.repository
 
-import androidx.lifecycle.liveData
 import com.michaelbentz.qriptid.database.dao.QrCodeDao
 import com.michaelbentz.qriptid.database.entity.QrCodeEntity
 import com.michaelbentz.qriptid.network.NetworkState
@@ -16,8 +15,8 @@ class QrCodeRepository @Inject constructor(
     private val qrCodeService: QrCodeService,
     private val qrCodeDao: QrCodeDao
 ) {
-    fun getLatest() = liveData {
-        emitSource(qrCodeDao.getLatest())
+    fun getLatest(): Flow<QrCodeEntity?> {
+        return qrCodeDao.getLatest()
     }
 
     suspend fun createQrCode(data: String): Flow<NetworkState<QrCodeEntity>> = flow {

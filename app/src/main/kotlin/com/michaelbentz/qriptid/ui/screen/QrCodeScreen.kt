@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,7 +38,7 @@ import com.michaelbentz.qriptid.viewmodel.QrCodeViewModel
 @Composable
 fun QrCodeScreen() {
     val viewModel: QrCodeViewModel = hiltViewModel()
-    val latestQrCodeState by viewModel.latestQrCode.observeAsState()
+    val latestQrCodeState by viewModel.latestQrCodeStateFlow.collectAsState()
     val createQrCodeState by viewModel.createQrCodeStateFlow.collectAsState()
     val focusManager = LocalFocusManager.current
     TopBar {
@@ -90,12 +89,15 @@ fun QrCodeScreen() {
                         NetworkState.Idle -> {
                             NetworkStateText(String())
                         }
+
                         is NetworkState.Loading -> {
                             NetworkStateText(stringResource(id = R.string.generating))
                         }
+
                         is NetworkState.Success -> {
                             NetworkStateText(stringResource(id = R.string.success))
                         }
+
                         is NetworkState.Error -> {
                             NetworkStateText("${networkState.message}")
                         }
