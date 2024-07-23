@@ -1,17 +1,19 @@
 # QRiptid
 
-QRiptid is a simple Android app showcasing recommended architecture, integrating APIs for QR code creation.
+QRiptid is a simple Android app showcasing recommended architecture, integrating APIs for QR code
+creation.
 
 ### Demonstrate
+
 - MVVM (Model-View-ViewModel)
+- Domain Use Cases
 - Room
 - Retrofit
 - Compose
-- StateFlow
-- LiveData
+- Flow API
 - Dagger Hilt
-- Domain Use Cases
 
 ### Consumed APIs
+
 - https://goqr.me/api/doc/create-qr-code/
 - https://goqr.me/api/doc/read-qr-code/
