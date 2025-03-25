@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CreateQrCodeUseCase @Inject constructor(
-    private val qrCodeRepository: QrCodeRepository
+    private val qrCodeRepository: QrCodeRepository,
 ) {
     suspend operator fun invoke(data: String): Flow<NetworkState<QrCodeEntity>> {
         return withContext(Dispatchers.IO) {

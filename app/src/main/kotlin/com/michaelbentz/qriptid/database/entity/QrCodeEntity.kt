@@ -11,7 +11,7 @@ class QrCodeEntity(
     val millis: Long,
     val data: String,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    val bytes: ByteArray
+    val bytes: ByteArray,
 ) {
     override fun toString(): String {
         return "QrCodeEntity(id=$id, millis=$millis)"

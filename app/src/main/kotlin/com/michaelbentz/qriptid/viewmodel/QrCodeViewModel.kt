@@ -6,31 +6,46 @@ import com.michaelbentz.qriptid.database.entity.QrCodeEntity
 import com.michaelbentz.qriptid.domain.usecase.CreateQrCodeUseCase
 import com.michaelbentz.qriptid.domain.usecase.GetLatestQrCodeUseCase
 import com.michaelbentz.qriptid.network.NetworkState
+import com.michaelbentz.qriptid.ui.model.QrCodeUiData
+import com.michaelbentz.qriptid.ui.state.QrCodeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class QrCodeViewModel @Inject constructor(
     private val getLatestQrCodeUseCase: GetLatestQrCodeUseCase,
     private val createQrCodeUseCase: CreateQrCodeUseCase
 ) : ViewModel() {
-    private val _latestQrCodeStateFlow: MutableStateFlow<QrCodeEntity?> = MutableStateFlow(null)
-    val latestQrCodeStateFlow = _latestQrCodeStateFlow.asStateFlow()
+    val uiState: StateFlow<QrCodeUiState> = getUiState().stateIn(
+        viewModelScope,
+        WhileSubscribed(5000),
+        QrCodeUiState.Loading,
+    )
 
     private val _createQrCodeStateFlow: MutableStateFlow<NetworkState<QrCodeEntity>> =
         MutableStateFlow(NetworkState.Idle)
     val createQrCodeStateFlow = _createQrCodeStateFlow.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            getLatestQrCodeUseCase().collectLatest {
-                _latestQrCodeStateFlow.emit(it)
-            }
-        }
+    private fun getUiState(): Flow<QrCodeUiState> = getLatestQrCodeUseCase().mapLatest { qrCode ->
+        qrCode?.let {
+            QrCodeUiState.Data(
+                QrCodeUiData(
+                    data = it.data,
+                    bytes = it.bytes,
+                    millis = it.millis,
+                )
+            )
+        } ?: QrCodeUiState.NoData
     }
 
     fun createQrCode(data: String) {
