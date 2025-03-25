@@ -62,7 +62,7 @@ fun QrCodeScreen() {
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(12.dp),
+                            .padding(16.dp),
                         singleLine = false,
                         minLines = 3,
                         maxLines = 6,
@@ -95,7 +95,7 @@ fun QrCodeScreen() {
                         QrCodeUiState.Loading -> {
                             Text(
                                 modifier = Modifier
-                                    .padding(horizontal = 20.dp),
+                                    .padding(horizontal = 24.dp),
                                 textAlign = TextAlign.Center,
                                 text = stringResource(R.string.generating),
                             )
