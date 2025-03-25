@@ -28,9 +28,11 @@ abstract class Database : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): Database {
-            return Room.databaseBuilder(context, Database::class.java, DATABASE_NAME)
-                .allowMainThreadQueries()
-                .build()
+            return Room.databaseBuilder(
+                context,
+                Database::class.java,
+                DATABASE_NAME
+            ).build()
         }
     }
 }
