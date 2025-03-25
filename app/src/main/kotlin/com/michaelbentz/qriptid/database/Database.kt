@@ -18,7 +18,6 @@ abstract class Database : RoomDatabase() {
     abstract fun qrCodeDao(): QrCodeDao
 
     companion object {
-
         @Volatile
         private var instance: Database? = null
 
@@ -29,9 +28,11 @@ abstract class Database : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): Database {
-            return Room.databaseBuilder(context, Database::class.java, DATABASE_NAME)
-                .allowMainThreadQueries()
-                .build()
+            return Room.databaseBuilder(
+                context,
+                Database::class.java,
+                DATABASE_NAME
+            ).build()
         }
     }
 }

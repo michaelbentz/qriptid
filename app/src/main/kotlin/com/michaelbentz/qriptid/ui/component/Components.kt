@@ -26,7 +26,7 @@ import com.michaelbentz.qriptid.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -67,10 +67,11 @@ fun ImageFromByteArray(
             )
     ) {
         Image(
+            modifier = Modifier
+                .padding(12.dp),
+            contentScale = ContentScale.Crop,
             bitmap = imageBitmap,
-            modifier = Modifier.padding(12.dp),
             contentDescription = contentDescription,
-            contentScale = ContentScale.Crop
         )
     }
 }

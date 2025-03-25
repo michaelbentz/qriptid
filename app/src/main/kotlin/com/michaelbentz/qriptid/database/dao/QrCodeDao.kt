@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface QrCodeDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insert(qrCodeEntity: QrCodeEntity): Long?
+    suspend fun insert(qrCodeEntity: QrCodeEntity): Long
 
     @Query("SELECT * FROM qr_code ORDER BY millis DESC LIMIT 1")
     fun getLatest(): Flow<QrCodeEntity?>
