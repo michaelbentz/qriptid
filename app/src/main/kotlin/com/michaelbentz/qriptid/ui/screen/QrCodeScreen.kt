@@ -119,7 +119,12 @@ fun QrCodeScreen() {
                                     )
                                 )
                                 Spacer()
-                                Text(text = toString())
+                                Text(
+                                    modifier = Modifier
+                                        .padding(horizontal = 24.dp),
+                                    textAlign = TextAlign.Center,
+                                    text = toString(),
+                                )
                                 Spacer()
                             }
                         }
