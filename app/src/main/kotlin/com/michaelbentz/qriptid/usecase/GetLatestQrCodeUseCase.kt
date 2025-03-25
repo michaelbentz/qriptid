@@ -1,4 +1,4 @@
-package com.michaelbentz.qriptid.domain.usecase
+package com.michaelbentz.qriptid.usecase
 
 import com.michaelbentz.qriptid.domain.model.QrCode
 import com.michaelbentz.qriptid.repository.QrCodeRepository

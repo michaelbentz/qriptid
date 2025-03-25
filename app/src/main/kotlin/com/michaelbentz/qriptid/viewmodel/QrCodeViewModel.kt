@@ -2,10 +2,10 @@ package com.michaelbentz.qriptid.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaelbentz.qriptid.domain.usecase.CreateQrCodeUseCase
-import com.michaelbentz.qriptid.domain.usecase.GetLatestQrCodeUseCase
 import com.michaelbentz.qriptid.ui.model.QrCodeUiData
 import com.michaelbentz.qriptid.ui.state.QrCodeUiState
+import com.michaelbentz.qriptid.usecase.CreateQrCodeUseCase
+import com.michaelbentz.qriptid.usecase.GetLatestQrCodeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

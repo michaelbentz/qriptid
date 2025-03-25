@@ -1,4 +1,4 @@
-package com.michaelbentz.qriptid.domain.usecase
+package com.michaelbentz.qriptid.usecase
 
 import com.michaelbentz.qriptid.repository.QrCodeRepository
 import javax.inject.Inject
