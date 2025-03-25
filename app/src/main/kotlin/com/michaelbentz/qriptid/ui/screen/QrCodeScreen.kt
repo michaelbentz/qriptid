@@ -16,7 +16,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.michaelbentz.qriptid.R
-import com.michaelbentz.qriptid.network.NetworkState
 import com.michaelbentz.qriptid.ui.component.ImageFromByteArray
 import com.michaelbentz.qriptid.ui.component.Spacer
 import com.michaelbentz.qriptid.ui.component.TopBar
@@ -39,10 +37,9 @@ import com.michaelbentz.qriptid.viewmodel.QrCodeViewModel
 
 @Composable
 fun QrCodeScreen() {
+    val focusManager = LocalFocusManager.current
     val viewModel: QrCodeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val createQrCodeState by viewModel.createQrCodeStateFlow.collectAsState()
-    val focusManager = LocalFocusManager.current
     TopBar {
         Surface(
             modifier = Modifier
@@ -89,54 +86,48 @@ fun QrCodeScreen() {
                         Text(text = stringResource(id = R.string.generate_qr_code))
                     }
                     Spacer()
-                    when (val networkState = createQrCodeState) {
-                        NetworkState.Idle -> {
-                            NetworkStateText(String())
-                        }
-
-                        is NetworkState.Loading -> {
-                            NetworkStateText(stringResource(id = R.string.generating))
-                        }
-
-                        is NetworkState.Success -> {
-                            NetworkStateText(stringResource(id = R.string.success))
-                        }
-
-                        is NetworkState.Error -> {
-                            NetworkStateText("${networkState.message}")
-                        }
-                    }
-                    (uiState as? QrCodeUiState.Data)?.data?.let { data ->
-                        with(data) {
-                            Spacer()
-                            Icon(
-                                Icons.Filled.KeyboardArrowDown,
-                                stringResource(id = R.string.content_description_arrow_down),
+                    Icon(
+                        Icons.Filled.KeyboardArrowDown,
+                        stringResource(id = R.string.content_description_arrow_down),
+                    )
+                    Spacer()
+                    when (val state = uiState) {
+                        QrCodeUiState.Loading -> {
+                            Text(
+                                modifier = Modifier
+                                    .padding(horizontal = 20.dp),
+                                textAlign = TextAlign.Center,
+                                text = stringResource(R.string.generating),
                             )
-                            Spacer()
-                            ImageFromByteArray(
-                                byteArray = bytes.toByteArray(),
-                                contentDescription = stringResource(
-                                    id = R.string.content_description_qr_code
+                        }
+
+                        is QrCodeUiState.Error -> {
+                            Text(
+                                modifier = Modifier
+                                    .padding(horizontal = 24.dp),
+                                textAlign = TextAlign.Center,
+                                text = state.message,
+                            )
+                        }
+
+                        is QrCodeUiState.Data -> {
+                            with(state.data) {
+                                ImageFromByteArray(
+                                    byteArray = bytes.toByteArray(),
+                                    contentDescription = stringResource(
+                                        id = R.string.content_description_qr_code
+                                    )
                                 )
-                            )
-                            Spacer()
-                            Text(text = toString())
-                            Spacer()
+                                Spacer()
+                                Text(text = toString())
+                                Spacer()
+                            }
                         }
+
+                        else -> {}
                     }
                 }
             }
         }
     }
-}
-
-@Composable
-private fun NetworkStateText(text: String) {
-    Text(
-        modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp),
-        textAlign = TextAlign.Center,
-        text = text,
-    )
 }

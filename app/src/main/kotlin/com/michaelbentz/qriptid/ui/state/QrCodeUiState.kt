@@ -6,4 +6,5 @@ sealed interface QrCodeUiState {
     object Loading : QrCodeUiState
     data class Data(val data: QrCodeUiData) : QrCodeUiState
     object NoData : QrCodeUiState
+    data class Error(val message: String) : QrCodeUiState
 }
