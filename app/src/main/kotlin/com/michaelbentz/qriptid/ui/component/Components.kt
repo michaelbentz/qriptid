@@ -67,10 +67,11 @@ fun ImageFromByteArray(
             )
     ) {
         Image(
+            modifier = Modifier
+                .padding(12.dp),
+            contentScale = ContentScale.Crop,
             bitmap = imageBitmap,
-            modifier = Modifier.padding(12.dp),
             contentDescription = contentDescription,
-            contentScale = ContentScale.Crop
         )
     }
 }
