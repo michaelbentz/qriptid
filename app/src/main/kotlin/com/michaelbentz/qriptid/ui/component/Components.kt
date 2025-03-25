@@ -26,7 +26,7 @@ import com.michaelbentz.qriptid.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Scaffold(
         topBar = {
