@@ -24,7 +24,8 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             QRiptidTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     NavHost(
